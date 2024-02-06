@@ -1,26 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import fastifyCookie from "@fastify/cookie";
 import fastify from "fastify";
-import z from "zod";
+import { createPoll } from "./routes/create-poll";
+import { getPoll } from "./routes/get-poll";
+import { voteOnPoll } from "./routes/vote-on-poll";
 
 const server = fastify();
 
-const prisma = new PrismaClient();
-
-server.post("/polls", async (request, reply) => {
-  const createPollBody = z.object({
-    title: z.string()
-  });
-
-  const { title } = createPollBody.parse(request.body);
-
-  const {id} = await prisma.poll.create({
-    data: {
-      title
-    }
-  });
-
-  return reply.status(201).send({pollId: id});
+server.register(fastifyCookie, {
+  secret: "my-realtime-polls-secret-key",
+  hook: 'onRequest',
 });
+
+server.register(createPoll);
+server.register(getPoll);
+server.register(voteOnPoll);
 
 server.listen({ port: 8080 }).then(() => {
   console.log("HTTP server is running on port 8080!");

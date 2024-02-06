@@ -2,5 +2,24 @@ POST http://localhost:8080/polls
 Content-Type: application/json
 
 {
-  "title": "What is your favorite color?"
+  "title": "Qual o melhor framework Node.js?",
+  "options": [
+    "Express",
+    "Koa",
+    "Nest",
+    "Hapi",
+    "Adonis"
+  ]
+}
+
+###
+GET http://localhost:8080/polls/5986533f-c8d7-4965-a976-94b5db04c5c6
+Content-Type: application/json
+
+###
+POST http://localhost:8080/polls/5986533f-c8d7-4965-a976-94b5db04c5c6/votes
+Content-Type: application/jsonv
+
+{
+  "pollOptionId": "2812e757-9712-480c-af2d-4a168a406e0b"
 }
