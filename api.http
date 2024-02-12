@@ -18,8 +18,8 @@ Content-Type: application/json
 
 ###
 POST http://localhost:8080/polls/5986533f-c8d7-4965-a976-94b5db04c5c6/votes
-Content-Type: application/jsonv
+Content-Type: application/json
 
 {
-  "pollOptionId": "2812e757-9712-480c-af2d-4a168a406e0b"
+  "pollOptionId": "f574f1a8-6d50-428e-8d8e-4f2301ec22cf"
 }

@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import z from "zod";
 import { prisma } from "../../lib/prisma";
 import { randomUUID } from "node:crypto";
+import { redis } from "../../lib/redis";
 
 export async function voteOnPoll(server: FastifyInstance) {
   server.post("/polls/:pollId/votes", async (request, reply) => {
@@ -46,6 +47,8 @@ export async function voteOnPoll(server: FastifyInstance) {
             id: userPreviousVoteOnPoll.id,
           },
         });
+
+        await redis.zincrby(`poll:${pollId}`, -1, userPreviousVoteOnPoll.optionId);
       }
     }
     
@@ -56,6 +59,8 @@ export async function voteOnPoll(server: FastifyInstance) {
         optionId: pollOptionId,
       },
     });
+
+    await redis.zincrby(`poll:${pollId}`, 1, pollOptionId);
 
     return reply.status(201).send();
   });
